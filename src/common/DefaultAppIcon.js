@@ -2,9 +2,10 @@ import { useId } from 'react';
 import { theme } from 'antd';
 
 // 默认铺满方形，由外层图标容器统一裁圆角；无容器时传 rounded，与 antd 方形 Avatar 圆角一致
-const DefaultAppIcon = ({ size = '100%', rounded = false, className }) => {
+const DefaultAppIcon = ({ size = '100%', rounded = false, themed = false, className }) => {
   const gradientId = `default-app-icon-${useId().replace(/:/g, '')}`;
   const { token } = theme.useToken();
+  const [startColor, endColor] = themed ? [token.colorPrimary, token.colorPrimaryHover] : ['#6366f1', '#8b5cf6'];
   return (
     <svg
       className={className}
@@ -16,8 +17,8 @@ const DefaultAppIcon = ({ size = '100%', rounded = false, className }) => {
     >
       <defs>
         <linearGradient id={gradientId} x1="0" y1="0" x2="1" y2="1">
-          <stop offset="0" stopColor="#6366f1" />
-          <stop offset="1" stopColor="#8b5cf6" />
+          <stop offset="0" stopColor={startColor} />
+          <stop offset="1" stopColor={endColor} />
         </linearGradient>
       </defs>
       <rect width="72" height="72" fill={`url(#${gradientId})`} />

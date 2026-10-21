@@ -24,14 +24,14 @@ const PwaSync = ({ apps }) => {
 
 const getCategoryCode = item => (typeof item.category === 'string' ? item.category : item.category?.code) || UNCATEGORIZED;
 
-const AppIcon = ({ item, Image, size }) => {
+const AppIcon = ({ item, Image, size, themed }) => {
   if (item.icon && Image?.Avatar) {
     return <Image.Avatar id={item.icon} alt={item.label || item.name} size={size} shape="square" />;
   }
-  return <DefaultAppIcon />;
+  return <DefaultAppIcon themed={themed} />;
 };
 
-const AppPanel = ({ list, groups, Image }) => {
+const AppPanel = ({ list, groups, Image, themed }) => {
   const { formatMessage } = useIntl();
   const isMobile = useIsMobile();
   const openApp = useOpenApp();
@@ -59,41 +59,44 @@ const AppPanel = ({ list, groups, Image }) => {
 
   return (
     <>
-      <div className={style['panel-header']}>
-        <div className={style['tabs']}>
+      <div className={classnames(style['panel-header'], 'app-center-header')}>
+        <div className={classnames(style['tabs'], 'app-center-tabs')}>
           {[{ code: 'all', name: formatMessage({ id: 'common.all' }) }, ...categories].map(({ code, name }) => (
             <button
               type="button"
               key={code}
-              className={classnames(style['tab'], { [style['tab-active']]: category === code })}
+              className={classnames(style['tab'], 'app-center-tab', {
+                [style['tab-active']]: category === code,
+                'app-center-tab-active': category === code
+              })}
               onClick={() => setCategory(code)}
             >
               {name}
             </button>
           ))}
         </div>
-        <Text className={style['count']}>{formatMessage({ id: 'appCenter.count' }, { value: filtered.length })}</Text>
+        <Text className={classnames(style['count'], 'app-center-count')}>{formatMessage({ id: 'appCenter.count' }, { value: filtered.length })}</Text>
       </div>
       {filtered.length === 0 ? (
         <Empty
-          className={style['empty']}
+          className={classnames(style['empty'], 'app-center-empty')}
           image={Empty.PRESENTED_IMAGE_SIMPLE}
           description={formatMessage({ id: list.length ? 'appCenter.noMatch' : 'appCenter.empty' })}
         />
       ) : (
-        <div className={style['grid']}>
+        <div className={classnames(style['grid'], 'app-center-grid')}>
           {filtered.map(item => (
             <button
               type="button"
               key={item.name}
-              className={style['app']}
+              className={classnames(style['app'], 'app-center-app')}
               title={item.description || item.label || item.name}
               onClick={() => openApp(item)}
             >
-              <div className={style['icon']}>
-                <AppIcon item={item} Image={Image} size={isMobile ? 52 : 72} />
+              <div className={classnames(style['icon'], 'app-center-icon')}>
+                <AppIcon item={item} Image={Image} size={isMobile ? 52 : 72} themed={themed} />
               </div>
-              <div className={style['label']}>{item.label || item.name}</div>
+              <div className={classnames(style['label'], 'app-center-label')}>{item.label || item.name}</div>
             </button>
           ))}
         </div>
@@ -105,7 +108,7 @@ const AppPanel = ({ list, groups, Image }) => {
 const Center = createWithRemoteLoader({
   modules: ['components-core:Global@usePreset', 'components-core:Image']
 })(
-  withLocale(({ remoteModules, className }) => {
+  withLocale(({ remoteModules, className, bordered = true }) => {
     const [usePreset, Image] = remoteModules;
     const { apis, getUserAccessToken } = usePreset();
     const { locale } = useIntl();
@@ -124,7 +127,7 @@ const Center = createWithRemoteLoader({
           ) : (
             <>
               <PwaSync apps={data?.pageData || []} />
-              <AppPanel list={data?.pageData || []} groups={groups} Image={Image} />
+              <AppPanel list={data?.pageData || []} groups={groups} Image={Image} themed={!bordered} />
             </>
           )
         }
@@ -132,7 +135,14 @@ const Center = createWithRemoteLoader({
     );
 
     return (
-      <section className={classnames(style['panel'], className)}>
+      <section
+        className={classnames(
+          style['panel'],
+          'app-center',
+          { [style['panel-borderless']]: !bordered, 'app-center-borderless': !bordered },
+          className
+        )}
+      >
         {apis.appManager.group?.groupList ? (
           <Fetch
             {...apis.appManager.group.groupList}

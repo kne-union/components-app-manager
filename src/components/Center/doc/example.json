@@ -19,6 +19,25 @@
           "packageName": "@kne/remote-loader"
         }
       ]
+    },
+    {
+      "title": "无边框",
+      "description": "bordered={false}：去掉面板边框、背景与阴影，融入宿主页面；分类标签与默认图标跟随主题色",
+      "code": "./borderless.js",
+      "scope": [
+        {
+          "name": "_AppCenter",
+          "packageName": "@components/Center"
+        },
+        {
+          "name": "_mockPreset",
+          "packageName": "@root/mockPreset"
+        },
+        {
+          "name": "remoteLoader",
+          "packageName": "@kne/remote-loader"
+        }
+      ]
     }
   ]
 }

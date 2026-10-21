@@ -139,6 +139,47 @@
   padding: 96px 0;
 }
 
+// 无边框：融入宿主页面背景，强调色跟随宿主主题色
+.panel-borderless {
+  --apps-primary: var(--primary-color, #4f46e5);
+  --apps-soft-bg: color-mix(in srgb, var(--apps-primary) 12%, transparent);
+  --apps-soft-border: color-mix(in srgb, var(--apps-primary) 28%, transparent);
+  --apps-soft-text: var(--apps-primary);
+  min-height: 0;
+  border: none;
+  border-radius: 0;
+  background: none;
+  box-shadow: none;
+  overflow: visible;
+
+  .panel-header {
+    padding: 0 0 16px;
+    border-bottom: none;
+    background: none;
+  }
+
+  .tab {
+    background: rgba(255, 255, 255, 0.6);
+
+    &:hover {
+      background: var(--apps-soft-bg);
+    }
+  }
+
+  .tab-active,
+  .tab-active:hover {
+    background: var(--apps-soft-bg);
+  }
+
+  .grid {
+    padding: 8px 0 0;
+  }
+
+  .app:hover {
+    background: color-mix(in srgb, var(--apps-primary) 8%, transparent);
+  }
+}
+
 @include resp.mobile-container {
   .panel {
     min-height: 0;
