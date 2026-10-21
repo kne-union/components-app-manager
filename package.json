@@ -1,6 +1,6 @@
 {
   "name": "@kne-components/components-app-manager",
-  "version": "0.1.0",
+  "version": "0.1.1",
   "description": "应用中心前端组件：应用管理后台与用户侧应用中心，配合 @kne/fastify-app-manager 使用.",
   "scripts": {
     "init": "husky",
