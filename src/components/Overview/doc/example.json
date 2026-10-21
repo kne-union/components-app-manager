@@ -1,0 +1,24 @@
+{
+  "isFull": true,
+  "list": [
+    {
+      "title": "应用概览",
+      "description": "应用基本信息、运行指标、进程与请求实时负载，以及访问路径、域名、状态说明",
+      "code": "./base.js",
+      "scope": [
+        {
+          "name": "_AppOverview",
+          "packageName": "@components/Overview"
+        },
+        {
+          "name": "_mockPreset",
+          "packageName": "@root/mockPreset"
+        },
+        {
+          "name": "remoteLoader",
+          "packageName": "@kne/remote-loader"
+        }
+      ]
+    }
+  ]
+}

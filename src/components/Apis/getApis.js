@@ -1,0 +1,250 @@
+const getApis = options => {
+  const { prefix } = Object.assign({}, { prefix: '/api/v1/app-manager' }, options);
+
+  return {
+    create: {
+      url: `${prefix}/app/create`,
+      method: 'POST'
+    },
+    save: {
+      url: `${prefix}/app/save`,
+      method: 'POST'
+    },
+    saveEnv: {
+      url: `${prefix}/app/save-env`,
+      method: 'POST'
+    },
+    envSchema: {
+      url: `${prefix}/app/env/schema`,
+      method: 'GET',
+      paramsType: 'params'
+    },
+    openApi: {
+      url: `${prefix}/app/open-api`,
+      method: 'GET',
+      paramsType: 'params'
+    },
+    openApiToken: {
+      url: `${prefix}/app/open-api/token`,
+      method: 'POST'
+    },
+    openApiRecords: {
+      url: `${prefix}/app/open-api/records`,
+      method: 'GET',
+      paramsType: 'params'
+    },
+    openApiRecordsCount: {
+      url: `${prefix}/app/open-api/records/count`,
+      method: 'GET',
+      paramsType: 'params'
+    },
+    openApiRecordsSave: {
+      url: `${prefix}/app/open-api/records/save`,
+      method: 'POST'
+    },
+    openApiRecordsRemove: {
+      url: `${prefix}/app/open-api/records/remove`,
+      method: 'POST'
+    },
+    uploadVersion: {
+      url: `${prefix}/app/version/upload`,
+      method: 'POST'
+    },
+    versionList: {
+      url: `${prefix}/app/version/list`,
+      method: 'GET',
+      paramsType: 'params'
+    },
+    versionDownload: {
+      url: `${prefix}/app/version/download`,
+      method: 'GET',
+      paramsType: 'params'
+    },
+    deploy: {
+      url: `${prefix}/app/deploy`,
+      method: 'POST'
+    },
+    migrationList: {
+      url: `${prefix}/app/version/migration/list`,
+      method: 'GET',
+      paramsType: 'params'
+    },
+    migrationContent: {
+      url: `${prefix}/app/version/migration/content`,
+      method: 'GET',
+      paramsType: 'params'
+    },
+    migrationSave: {
+      url: `${prefix}/app/version/migration/save`,
+      method: 'POST'
+    },
+    migrationRemove: {
+      url: `${prefix}/app/version/migration/remove`,
+      method: 'POST'
+    },
+    migrationAction: {
+      url: `${prefix}/app/version/migration/action`,
+      method: 'POST'
+    },
+    list: {
+      url: `${prefix}/app/list`,
+      method: 'GET',
+      paramsType: 'params'
+    },
+    centerList: {
+      url: `${prefix}/app/center/list`,
+      method: 'GET'
+    },
+    centerPublicList: {
+      url: `${prefix}/app/center/public-list`,
+      method: 'GET'
+    },
+    detail: {
+      url: `${prefix}/app/detail`,
+      method: 'GET',
+      paramsType: 'params'
+    },
+    start: {
+      url: `${prefix}/app/start`,
+      method: 'POST'
+    },
+    stop: {
+      url: `${prefix}/app/stop`,
+      method: 'POST'
+    },
+    restart: {
+      url: `${prefix}/app/restart`,
+      method: 'POST'
+    },
+    remove: {
+      url: `${prefix}/app/remove`,
+      method: 'POST'
+    },
+    logs: {
+      url: `${prefix}/app/logs`,
+      method: 'GET',
+      paramsType: 'params'
+    },
+    logsStream: {
+      url: `${prefix}/app/logs/stream`,
+      method: 'GET',
+      paramsType: 'params'
+    },
+    logsFiles: {
+      url: `${prefix}/app/logs/files`,
+      method: 'GET',
+      paramsType: 'params'
+    },
+    logsDownload: {
+      url: `${prefix}/app/logs/download`,
+      method: 'GET',
+      paramsType: 'params'
+    },
+    logsDownloadZip: {
+      url: `${prefix}/app/logs/download-zip`,
+      method: 'GET',
+      paramsType: 'params'
+    },
+    logsRemove: {
+      url: `${prefix}/app/logs/remove`,
+      method: 'POST'
+    },
+    load: {
+      url: `${prefix}/app/load`,
+      method: 'GET',
+      paramsType: 'params'
+    },
+    loadStream: {
+      url: `${prefix}/app/load/stream`,
+      method: 'GET',
+      paramsType: 'params'
+    },
+    deployStream: {
+      url: `${prefix}/app/deploy/stream`,
+      method: 'GET',
+      paramsType: 'params'
+    },
+    deployDetail: {
+      url: `${prefix}/app/deploy/detail`,
+      method: 'GET',
+      paramsType: 'params'
+    },
+    dbTables: {
+      url: `${prefix}/app/db/tables`,
+      method: 'GET',
+      paramsType: 'params'
+    },
+    dbTablesRegister: {
+      url: `${prefix}/app/db/tables/register`,
+      method: 'POST'
+    },
+    dbTablesSyncOwned: {
+      url: `${prefix}/app/db/tables/sync-owned`,
+      method: 'POST'
+    },
+    dbTablesUnregister: {
+      url: `${prefix}/app/db/tables/unregister`,
+      method: 'POST'
+    },
+    dbRows: {
+      url: `${prefix}/app/db/rows`,
+      method: 'GET',
+      paramsType: 'params'
+    },
+    dbRow: {
+      url: `${prefix}/app/db/row`,
+      method: 'GET',
+      paramsType: 'params'
+    },
+    dbRowSave: {
+      url: `${prefix}/app/db/row/save`,
+      method: 'POST'
+    },
+    dbRowRemove: {
+      url: `${prefix}/app/db/row/remove`,
+      method: 'POST'
+    },
+    dbRowRestore: {
+      url: `${prefix}/app/db/row/restore`,
+      method: 'POST'
+    },
+    dbQuery: {
+      url: `${prefix}/app/db/query`,
+      method: 'POST'
+    },
+    dbExport: {
+      url: `${prefix}/app/db/export`,
+      method: 'POST'
+    },
+    dbCleanup: {
+      url: `${prefix}/app/db/cleanup`,
+      method: 'POST'
+    },
+    group: {
+      list: {
+        url: `${prefix}/group/list`,
+        method: 'GET',
+        paramsType: 'params'
+      },
+      groupList: {
+        url: `${prefix}/group/group-list`,
+        method: 'GET',
+        paramsType: 'params'
+      },
+      create: {
+        url: `${prefix}/group/save`,
+        method: 'POST'
+      },
+      save: {
+        url: `${prefix}/group/save`,
+        method: 'POST'
+      },
+      remove: {
+        url: `${prefix}/group/remove`,
+        method: 'POST'
+      }
+    }
+  };
+};
+
+export default getApis;

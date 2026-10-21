@@ -1,0 +1,24 @@
+{
+  "isFull": true,
+  "list": [
+    {
+      "title": "环境变量",
+      "description": "按版本内 env.schema.json 编辑环境变量，区分必填、默认值与密钥，校验失败直接提示",
+      "code": "./base.js",
+      "scope": [
+        {
+          "name": "_AppEnv",
+          "packageName": "@components/Env"
+        },
+        {
+          "name": "_mockPreset",
+          "packageName": "@root/mockPreset"
+        },
+        {
+          "name": "remoteLoader",
+          "packageName": "@kne/remote-loader"
+        }
+      ]
+    }
+  ]
+}

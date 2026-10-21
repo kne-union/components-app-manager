@@ -8,6 +8,7 @@ module.exports = {
     alias: {
       "@root": path.resolve("./src"),
       "@components": path.resolve("./src/components"),
+      "@common": path.resolve("./src/common"),
     }
   }
 }

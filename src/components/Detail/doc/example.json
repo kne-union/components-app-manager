@@ -1,0 +1,28 @@
+{
+  "isFull": true,
+  "list": [
+    {
+      "title": "应用详情",
+      "description": "应用详情页：页头操作、运行控制条，以及概览 / 版本 / 接口文档 / 环境变量 / 数据运维 / 日志 / 设置七个 Tab",
+      "code": "./base.js",
+      "scope": [
+        {
+          "name": "_AppDetail",
+          "packageName": "@components/Detail"
+        },
+        {
+          "name": "_mockPreset",
+          "packageName": "@root/mockPreset"
+        },
+        {
+          "name": "remoteLoader",
+          "packageName": "@kne/remote-loader"
+        },
+        {
+          "name": "reactRouterDom",
+          "packageName": "react-router-dom"
+        }
+      ]
+    }
+  ]
+}
