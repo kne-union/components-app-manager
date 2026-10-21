@@ -1,0 +1,85 @@
+@use '~@kne/responsive-utils/scss' as resp;
+
+.overview {
+  display: flex;
+  flex-direction: column;
+  gap: 12px;
+  width: 100%;
+  min-width: 0;
+}
+
+.detail-card {
+  padding: 16px 18px;
+  border: 1px solid #e8edf3;
+  border-radius: 16px;
+  background: #fff;
+  box-shadow: 0 4px 16px rgba(15, 23, 42, 0.03);
+}
+
+.detail-card-title {
+  margin-bottom: 12px;
+  font-size: 14px;
+  font-weight: 600;
+  color: #0f172a;
+}
+
+.detail-card-header {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 12px;
+  margin-bottom: 12px;
+
+  .detail-card-title {
+    margin-bottom: 0;
+  }
+}
+
+.field-list {
+  display: flex;
+  flex-direction: column;
+  gap: 0;
+}
+
+.field-row {
+  display: grid;
+  grid-template-columns: 96px minmax(0, 1fr);
+  gap: 12px;
+  align-items: start;
+  padding: 12px 0;
+  border-top: 1px solid #f1f5f9;
+
+  &:first-child {
+    padding-top: 0;
+    border-top: none;
+  }
+
+  &:last-child {
+    padding-bottom: 0;
+  }
+}
+
+.field-label {
+  font-size: 13px;
+  line-height: 1.5;
+}
+
+.field-value {
+  min-width: 0;
+  font-size: 13px;
+  line-height: 1.5;
+  color: #0f172a;
+  word-break: break-word;
+}
+
+@include resp.mobile-container {
+  .detail-card {
+    padding: 14px 16px;
+    border-radius: 14px;
+  }
+  .field-row {
+    grid-template-columns: 1fr;
+    gap: 4px;
+    padding: 10px 0;
+  }
+}

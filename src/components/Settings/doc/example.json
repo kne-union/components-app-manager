@@ -1,0 +1,24 @@
+{
+  "isFull": true,
+  "list": [
+    {
+      "title": "进程设置",
+      "description": "按应用调整 PM2 运行模式、实例数、内存上限、自动重启等，留空项使用应用中心默认值",
+      "code": "./base.js",
+      "scope": [
+        {
+          "name": "_AppSettings",
+          "packageName": "@components/Settings"
+        },
+        {
+          "name": "_mockPreset",
+          "packageName": "@root/mockPreset"
+        },
+        {
+          "name": "remoteLoader",
+          "packageName": "@kne/remote-loader"
+        }
+      ]
+    }
+  ]
+}

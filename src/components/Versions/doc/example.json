@@ -1,0 +1,24 @@
+{
+  "isFull": true,
+  "list": [
+    {
+      "title": "版本管理",
+      "description": "版本列表：上传 zip 版本、部署（可选执行 SQL 迁移）、查看部署记录、下载版本包",
+      "code": "./base.js",
+      "scope": [
+        {
+          "name": "_AppVersions",
+          "packageName": "@components/Versions"
+        },
+        {
+          "name": "_mockPreset",
+          "packageName": "@root/mockPreset"
+        },
+        {
+          "name": "remoteLoader",
+          "packageName": "@kne/remote-loader"
+        }
+      ]
+    }
+  ]
+}

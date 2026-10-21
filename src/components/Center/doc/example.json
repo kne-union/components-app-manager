@@ -1,0 +1,24 @@
+{
+  "isFull": true,
+  "list": [
+    {
+      "title": "应用中心",
+      "description": "用户侧应用中心：按分类浏览运行中的应用，多入口应用点击后弹窗选择入口；已登录用户看到全部运行中应用，未登录只看到公开应用",
+      "code": "./base.js",
+      "scope": [
+        {
+          "name": "_AppCenter",
+          "packageName": "@components/Center"
+        },
+        {
+          "name": "_mockPreset",
+          "packageName": "@root/mockPreset"
+        },
+        {
+          "name": "remoteLoader",
+          "packageName": "@kne/remote-loader"
+        }
+      ]
+    }
+  ]
+}

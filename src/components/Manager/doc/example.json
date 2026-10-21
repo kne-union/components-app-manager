@@ -1,0 +1,28 @@
+{
+  "isFull": true,
+  "list": [
+    {
+      "title": "应用管理后台",
+      "description": "管理员视角的应用管理：列表筛选、新建/编辑应用、上传版本、部署（含 SQL 迁移）、启停、环境变量、日志与数据运维；详情页通过 ?name= 打开",
+      "code": "./base.js",
+      "scope": [
+        {
+          "name": "_AppManager",
+          "packageName": "@components/Manager"
+        },
+        {
+          "name": "_mockPreset",
+          "packageName": "@root/mockPreset"
+        },
+        {
+          "name": "remoteLoader",
+          "packageName": "@kne/remote-loader"
+        },
+        {
+          "name": "reactRouterDom",
+          "packageName": "react-router-dom"
+        }
+      ]
+    }
+  ]
+}

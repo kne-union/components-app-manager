@@ -1,0 +1,16 @@
+{
+  "isFull": false,
+  "list": [
+    {
+      "title": "生成接口配置",
+      "description": "按后端 @kne/fastify-app-manager 的注册前缀生成 apis.appManager，放入宿主 preset",
+      "code": "./base.js",
+      "scope": [
+        {
+          "name": "_Apis",
+          "packageName": "@components/Apis"
+        }
+      ]
+    }
+  ]
+}
