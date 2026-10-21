@@ -1,0 +1,24 @@
+{
+  "isFull": true,
+  "list": [
+    {
+      "title": "接口文档",
+      "description": "读取运行中应用的 open-api.json，按分组浏览接口并在线调试；调用记录与用例按应用保存",
+      "code": "./base.js",
+      "scope": [
+        {
+          "name": "_AppOpenApi",
+          "packageName": "@components/OpenApi"
+        },
+        {
+          "name": "_mockPreset",
+          "packageName": "@root/mockPreset"
+        },
+        {
+          "name": "remoteLoader",
+          "packageName": "@kne/remote-loader"
+        }
+      ]
+    }
+  ]
+}

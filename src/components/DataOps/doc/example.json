@@ -1,0 +1,24 @@
+{
+  "isFull": true,
+  "list": [
+    {
+      "title": "数据运维",
+      "description": "浏览应用数据表、编辑与恢复行数据、执行只读 SQL，并可切换应用数据库连接",
+      "code": "./base.js",
+      "scope": [
+        {
+          "name": "_AppDataOps",
+          "packageName": "@components/DataOps"
+        },
+        {
+          "name": "_mockPreset",
+          "packageName": "@root/mockPreset"
+        },
+        {
+          "name": "remoteLoader",
+          "packageName": "@kne/remote-loader"
+        }
+      ]
+    }
+  ]
+}

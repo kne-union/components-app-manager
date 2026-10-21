@@ -1,0 +1,28 @@
+{
+  "isFull": true,
+  "list": [
+    {
+      "title": "应用列表",
+      "description": "BizUnit 应用列表：状态筛选、关键字搜索、表格 / 卡片视图切换、新建应用与行操作；点击应用跳转 detail?name=",
+      "code": "./base.js",
+      "scope": [
+        {
+          "name": "_AppList",
+          "packageName": "@components/List"
+        },
+        {
+          "name": "_mockPreset",
+          "packageName": "@root/mockPreset"
+        },
+        {
+          "name": "remoteLoader",
+          "packageName": "@kne/remote-loader"
+        },
+        {
+          "name": "reactRouterDom",
+          "packageName": "react-router-dom"
+        }
+      ]
+    }
+  ]
+}
