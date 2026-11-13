@@ -189,7 +189,7 @@ const LogArchives = createWithRemoteLoader({
         width={isMobile ? '100%' : 820}
         open={open}
         onClose={onClose}
-        destroyOnClose
+        destroyOnHidden
         afterOpenChange={visible => !visible && clearSelectedRows()}
       >
         {open && appName ? (
