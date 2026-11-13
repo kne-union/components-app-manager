@@ -137,7 +137,7 @@ const MigrationManager = createWithRemoteLoader({
           width={860}
           open={open}
           onClose={() => setOpen(false)}
-          destroyOnClose
+          destroyOnHidden
         >
           {open ? (
             <Space direction="vertical" size={12} style={{ width: '100%' }}>
@@ -243,7 +243,7 @@ const MigrationManager = createWithRemoteLoader({
           width={820}
           open={!!editor}
           onClose={() => setEditor(null)}
-          destroyOnClose
+          destroyOnHidden
           footer={
             <Space style={{ display: 'flex', justifyContent: 'flex-end' }}>
               <Button onClick={() => setEditor(null)}>{formatMessage({ id: 'common.cancel' })}</Button>

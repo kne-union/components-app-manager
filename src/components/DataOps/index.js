@@ -893,7 +893,7 @@ const DataOps = createWithRemoteLoader({
                 width={isMobile ? '100%' : 820}
                 open={queryOpen}
                 onClose={() => setQueryOpen(false)}
-                destroyOnClose={false}
+                destroyOnHidden={false}
                 extra={
                   <Button type="primary" loading={queryRunning} onClick={runQuery}>
                     {formatMessage({ id: 'appManager.db.runQuery' })}
