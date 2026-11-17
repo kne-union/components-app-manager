@@ -45,7 +45,7 @@ const Detail = createWithRemoteLoader({
             if (activeKey === 'versions') {
               content = <Versions data={data} onSuccess={reload} />;
             } else if (activeKey === 'env') {
-              content = <Env data={data} onSuccess={reload} />;
+              content = <Env data={data} onSuccess={reload} readOnly={data.kind === 'linked'} />;
             } else if (activeKey === 'data') {
               content = <DataOps data={data} onSuccess={reload} />;
             } else if (activeKey === 'logs') {
@@ -83,7 +83,7 @@ const Detail = createWithRemoteLoader({
                           />
                         }
                       />
-                      <LifecycleBar data={data} onSuccess={reload} />
+                      {data.kind === 'linked' ? null : <LifecycleBar data={data} onSuccess={reload} />}
                     </div>
                   ) : (
                     <PageHeader title={<DetailPageHeaderTitle baseUrl={baseUrl} title={formatMessage({ id: 'common.loading' })} />} />
@@ -98,13 +98,15 @@ const Detail = createWithRemoteLoader({
                   },
                   stateOption: [
                     { tab: formatMessage({ id: 'appManager.tabs.overview' }), key: 'overview' },
-                    { tab: formatMessage({ id: 'appManager.tabs.versions' }), key: 'versions' },
+                    data.kind === 'linked'
+                      ? null
+                      : { tab: formatMessage({ id: 'appManager.tabs.versions' }), key: 'versions' },
                     { tab: formatMessage({ id: 'appManager.tabs.openApi' }), key: 'openApi' },
                     { tab: formatMessage({ id: 'appManager.tabs.env' }), key: 'env' },
                     { tab: formatMessage({ id: 'appManager.tabs.data' }), key: 'data' },
                     { tab: formatMessage({ id: 'appManager.tabs.logs' }), key: 'logs' },
                     { tab: formatMessage({ id: 'appManager.tabs.settings' }), key: 'settings' }
-                  ]
+                  ].filter(Boolean)
                 }}
               >
                 {content}

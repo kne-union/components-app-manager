@@ -68,8 +68,9 @@ const resolveKeyword = requestData => {
 const EnvEditor = createWithRemoteLoader({
   modules: ['components-core:Global@usePreset', 'components-core:TablePage', 'components-core:FormInfo']
 })(
-  withLocale(({ remoteModules, data, onSuccess }) => {
+  withLocale(({ remoteModules, data, onSuccess, readOnly = false }) => {
     const [usePreset, TablePage, FormInfo] = remoteModules;
+    const isReadOnly = readOnly || data?.kind === 'linked' || data?.options?.readOnly === true;
     const { ajax, apis } = usePreset();
     const { useFormModal, TableList } = FormInfo;
     const { Input, Switch } = FormInfo.fields;
@@ -468,27 +469,31 @@ const EnvEditor = createWithRemoteLoader({
             label: formatMessage({ id: 'common.keyword' }),
             placeholder: formatMessage({ id: 'appManager.env.searchPlaceholder' })
           }}
-          buttonGroup={{
-            list: [
-              {
-                type: 'primary',
-                children: formatMessage({ id: 'appManager.env.add' }),
-                onClick: openAddModal
-              },
-              {
-                children: formatMessage({ id: 'appManager.env.paste' }),
-                icon: <SnippetsOutlined />,
-                onClick: handlePasteFromClipboard
-              },
-              {
-                children: formatMessage({ id: 'appManager.env.upload' }),
-                icon: <UploadOutlined />,
-                onClick: () => {
-                  fileInputRef.current && fileInputRef.current.click();
+          buttonGroup={
+            isReadOnly
+              ? undefined
+              : {
+                  list: [
+                    {
+                      type: 'primary',
+                      children: formatMessage({ id: 'appManager.env.add' }),
+                      onClick: openAddModal
+                    },
+                    {
+                      children: formatMessage({ id: 'appManager.env.paste' }),
+                      icon: <SnippetsOutlined />,
+                      onClick: handlePasteFromClipboard
+                    },
+                    {
+                      children: formatMessage({ id: 'appManager.env.upload' }),
+                      icon: <UploadOutlined />,
+                      onClick: () => {
+                        fileInputRef.current && fileInputRef.current.click();
+                      }
+                    }
+                  ]
                 }
-              }
-            ]
-          }}
+          }
           loader={async ({ data: requestData } = {}) => {
             const { data: resData } = await ajax(Object.assign({}, apis.appManager.envSchema, { params: { name: dataRef.current?.name } }));
             const nextDeclaration = resData.code === 0 ? resData.data : null;
