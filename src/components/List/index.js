@@ -55,16 +55,20 @@ const List = createWithRemoteLoader({
 
     const renderAppMarketCards = useMemo(() => createRenderAppMarketCards({ Image, navigate, formatMessage }), [Image, navigate, formatMessage]);
 
+    const linkImportExtra = useMemo(
+      () => (
+        <LinkImport
+          onSuccess={() => {
+            // titleExtra 拿不到 BizUnit reloadTable，关联成功后刷新列表
+            window.location.reload();
+          }}
+        />
+      ),
+      []
+    );
+
     return (
       <div className={style['list-page']}>
-        <div className={style['list-toolbar']}>
-          <LinkImport
-            onSuccess={() => {
-              // BizUnit 列表在创建后会自行刷新；关联成功后刷新页面即可
-              window.location.reload();
-            }}
-          />
-        </div>
         <BizUnit
           {...props}
           isNext
@@ -75,6 +79,7 @@ const List = createWithRemoteLoader({
           filter={filter}
           getColumns={getColumnsFn}
           getActionList={getActionListFn}
+          titleExtra={linkImportExtra}
           options={{
             showLength: isMobile ? 0 : 2,
             createButtonProps: {

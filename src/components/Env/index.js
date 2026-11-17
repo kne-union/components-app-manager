@@ -315,121 +315,127 @@ const EnvEditor = createWithRemoteLoader({
     );
 
     const columns = useCallback(
-      () => [
-        {
-          name: 'key',
-          title: formatMessage({ id: 'appManager.env.key' }),
-          renderType: 'main'
-        },
-        {
-          name: 'source',
-          title: formatMessage({ id: 'appManager.env.source' }),
-          width: 110,
-          renderType: 'tag',
-          getValueOf: item => {
-            if (item.source === 'other') {
-              return { type: 'default', text: formatMessage({ id: 'appManager.env.sourceOther' }) };
-            }
-            return item.required
-              ? { type: 'warning', text: formatMessage({ id: 'appManager.env.sourceRequired' }) }
-              : { type: 'info', text: formatMessage({ id: 'appManager.env.sourceDeclared' }) };
-          }
-        },
-        {
-          name: 'status',
-          title: formatMessage({ id: 'appManager.env.status' }),
-          width: 140,
-          renderType: 'tag',
-          getValueOf: item => {
-            if (item.error) {
-              return { type: 'danger', text: item.error };
-            }
-            if (item.configured) {
-              return { type: 'success', text: formatMessage({ id: 'appManager.env.statusConfigured' }) };
-            }
-            if (item.default != null) {
-              return { type: 'default', text: formatMessage({ id: 'appManager.env.statusDefault' }) };
-            }
-            return { type: 'default', text: formatMessage({ id: 'appManager.env.statusEmpty' }) };
-          }
-        },
-        {
-          name: 'secret',
-          title: formatMessage({ id: 'appManager.env.type' }),
-          width: 100,
-          renderType: 'tag',
-          getValueOf: item =>
-            item.secret
-              ? { type: 'warning', text: formatMessage({ id: 'appManager.env.typeSecret' }) }
-              : { type: 'default', text: formatMessage({ id: 'appManager.env.typeNormal' }) }
-        },
-        {
-          name: 'value',
-          title: formatMessage({ id: 'appManager.env.value' }),
-          renderType: 'description',
-          getValueOf: item => {
-            if (item.configured) {
-              return item.secret && item.value ? SECRET_MASK : item.value || '';
-            }
-            return item.default != null ? formatMessage({ id: 'appManager.env.defaultValue' }, { value: formatDefault(item.default) }) : '';
-          }
-        },
-        {
-          name: 'description',
-          title: formatMessage({ id: 'appManager.env.description' }),
-          renderType: 'description',
-          getValueOf: item => item.description || ''
-        },
-        {
-          name: 'options',
-          renderType: 'options',
-          title: formatMessage({ id: 'appManager.version.actions' }),
-          fixed: 'right',
-          getValueOf: item => {
-            const secretEnvKeys = dataRef.current?.secretEnvKeys || [];
-            const list = [
-              {
-                children: formatMessage({ id: 'common.edit' }),
-                onClick: () => openEditModal(item)
+      () => {
+        const cols = [
+          {
+            name: 'key',
+            title: formatMessage({ id: 'appManager.env.key' }),
+            renderType: 'main'
+          },
+          {
+            name: 'source',
+            title: formatMessage({ id: 'appManager.env.source' }),
+            width: 110,
+            renderType: 'tag',
+            getValueOf: item => {
+              if (item.source === 'other') {
+                return { type: 'default', text: formatMessage({ id: 'appManager.env.sourceOther' }) };
               }
-            ];
-            if (!item.configured) {
-              return list;
+              return item.required
+                ? { type: 'warning', text: formatMessage({ id: 'appManager.env.sourceRequired' }) }
+                : { type: 'info', text: formatMessage({ id: 'appManager.env.sourceDeclared' }) };
             }
-            if (!item.secret) {
+          },
+          {
+            name: 'status',
+            title: formatMessage({ id: 'appManager.env.status' }),
+            width: 140,
+            renderType: 'tag',
+            getValueOf: item => {
+              if (item.error) {
+                return { type: 'danger', text: item.error };
+              }
+              if (item.configured) {
+                return { type: 'success', text: formatMessage({ id: 'appManager.env.statusConfigured' }) };
+              }
+              if (item.default != null) {
+                return { type: 'default', text: formatMessage({ id: 'appManager.env.statusDefault' }) };
+              }
+              return { type: 'default', text: formatMessage({ id: 'appManager.env.statusEmpty' }) };
+            }
+          },
+          {
+            name: 'secret',
+            title: formatMessage({ id: 'appManager.env.type' }),
+            width: 100,
+            renderType: 'tag',
+            getValueOf: item =>
+              item.secret
+                ? { type: 'warning', text: formatMessage({ id: 'appManager.env.typeSecret' }) }
+                : { type: 'default', text: formatMessage({ id: 'appManager.env.typeNormal' }) }
+          },
+          {
+            name: 'value',
+            title: formatMessage({ id: 'appManager.env.value' }),
+            renderType: 'description',
+            getValueOf: item => {
+              if (item.configured) {
+                return item.secret && item.value ? SECRET_MASK : item.value || '';
+              }
+              return item.default != null ? formatMessage({ id: 'appManager.env.defaultValue' }, { value: formatDefault(item.default) }) : '';
+            }
+          },
+          {
+            name: 'description',
+            title: formatMessage({ id: 'appManager.env.description' }),
+            renderType: 'description',
+            getValueOf: item => item.description || ''
+          }
+        ];
+        // linked / 只读：不展示编辑、标记密钥、删除
+        if (!isReadOnly) {
+          cols.push({
+            name: 'options',
+            renderType: 'options',
+            title: formatMessage({ id: 'appManager.version.actions' }),
+            fixed: 'right',
+            getValueOf: item => {
+              const secretEnvKeys = dataRef.current?.secretEnvKeys || [];
+              const list = [
+                {
+                  children: formatMessage({ id: 'common.edit' }),
+                  onClick: () => openEditModal(item)
+                }
+              ];
+              if (!item.configured) {
+                return list;
+              }
+              if (!item.secret) {
+                list.push({
+                  children: formatMessage({ id: 'appManager.env.markSecret' }),
+                  confirm: true,
+                  message: formatMessage({ id: 'appManager.env.markSecretConfirm' }, { key: item.key }),
+                  onClick: async () => {
+                    const nextSecrets = [...new Set([...secretEnvKeys, item.key])];
+                    const resData = await saveEnv({}, nextSecrets);
+                    if (resData.code !== 0) {
+                      return;
+                    }
+                    message.success(formatMessage({ id: 'appManager.env.markSecretSuccess' }));
+                    handleSuccess();
+                  }
+                });
+              }
               list.push({
-                children: formatMessage({ id: 'appManager.env.markSecret' }),
+                children: formatMessage({ id: 'common.delete' }),
                 confirm: true,
-                message: formatMessage({ id: 'appManager.env.markSecretConfirm' }, { key: item.key }),
                 onClick: async () => {
-                  const nextSecrets = [...new Set([...secretEnvKeys, item.key])];
-                  const resData = await saveEnv({}, nextSecrets);
+                  const nextSecrets = secretEnvKeys.filter(key => key !== item.key);
+                  const resData = await saveEnv({ [item.key]: null }, nextSecrets);
                   if (resData.code !== 0) {
                     return;
                   }
-                  message.success(formatMessage({ id: 'appManager.env.markSecretSuccess' }));
+                  message.success(formatMessage({ id: 'common.deleteSuccess' }));
                   handleSuccess();
                 }
               });
+              return list;
             }
-            list.push({
-              children: formatMessage({ id: 'common.delete' }),
-              confirm: true,
-              onClick: async () => {
-                const nextSecrets = secretEnvKeys.filter(key => key !== item.key);
-                const resData = await saveEnv({ [item.key]: null }, nextSecrets);
-                if (resData.code !== 0) {
-                  return;
-                }
-                message.success(formatMessage({ id: 'common.deleteSuccess' }));
-                handleSuccess();
-              }
-            });
-            return list;
-          }
+          });
         }
-      ],
-      [formatMessage, handleSuccess, message, openEditModal, saveEnv]
+        return cols;
+      },
+      [formatMessage, handleSuccess, isReadOnly, message, openEditModal, saveEnv]
     );
 
     const renderSummary = () => {
@@ -437,6 +443,12 @@ const EnvEditor = createWithRemoteLoader({
         return null;
       }
       const alertProps = { showIcon: true, style: { marginBottom: 16 } };
+      if (isReadOnly) {
+        if (!declaration.hasSchema) {
+          return <Alert {...alertProps} type="warning" message={formatMessage({ id: 'appManager.env.linkedNoSchema' })} />;
+        }
+        return <Alert {...alertProps} type="info" message={formatMessage({ id: 'appManager.env.linkedReadOnly' })} />;
+      }
       if (!declaration.versionId) {
         return <Alert {...alertProps} type="info" message={formatMessage({ id: 'appManager.env.noVersion' })} />;
       }

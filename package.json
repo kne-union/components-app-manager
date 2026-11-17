@@ -1,6 +1,6 @@
 {
   "name": "@kne-components/components-app-manager",
-  "version": "0.1.4",
+  "version": "0.1.5",
   "description": "应用中心前端组件：应用管理后台与用户侧应用中心，配合 @kne/fastify-app-manager 使用.",
   "scripts": {
     "init": "husky",
@@ -71,9 +71,10 @@
     }
   },
   "devDependencies": {
-    "@craco/craco": "^7.1.0",
+    "@kne/craco": "^7.1.4",
     "@kne/modules-dev": "^2.4.21",
     "@kne/react-fetch": "^1.5.7",
+    "@kne/react-scripts": "^5.1.6",
     "@kne/remote-loader": "^1.5.0",
     "@loadable/component": "^5.16.3",
     "@testing-library/jest-dom": "^6.4.2",
@@ -83,12 +84,14 @@
     "cross-env": "^7.0.3",
     "http-proxy-middleware": "^2.0.6",
     "husky": "^9.0.11",
+    "loader-utils": "^3.3.1",
     "lodash": "^4.17.21",
     "prettier": "^3.2.5",
     "react": "^19.3.1",
     "react-dom": "^19.3.1",
     "react-router-dom": "^6.22.2",
-    "sass": "^1.75.0"
+    "sass": "^1.75.0",
+    "sass-loader": "^16.0.8"
   },
   "dependencies": {
     "@ant-design/icons": "^6.0.0",

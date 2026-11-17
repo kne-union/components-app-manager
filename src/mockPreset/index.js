@@ -3,6 +3,7 @@ import merge from 'lodash/merge';
 import { getApis } from '@components/Apis';
 import createOpenApiMock from './openApi';
 import createDataOpsMock from './dataOps';
+import createPlatformLinkMock from './platformLink';
 
 const now = Date.now();
 const minutesAgo = minutes => new Date(now - minutes * 60 * 1000).toISOString();
@@ -268,9 +269,18 @@ const apis = merge(
   }
 );
 
+const platformLinkMock = createPlatformLinkMock({ delay });
+
 const ajax = async ({ loader, ...props }) => {
   if (loader) {
     return { data: { code: 0, data: await loader(props) } };
+  }
+  const linkData = await platformLinkMock.handleAjax(props);
+  if (linkData) {
+    if (linkData.__biz) {
+      return { data: { code: linkData.code, msg: linkData.msg, data: linkData.data } };
+    }
+    return { data: { code: 0, data: linkData } };
   }
   message.info('示例环境：已模拟提交');
   return { data: { code: 0, data: {} } };

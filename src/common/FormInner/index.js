@@ -41,6 +41,14 @@ const FormInner = createWithRemoteLoader({
           block
         />
         <Switch name="isPublic" label={formatMessage({ id: 'common.isPublic' })} defaultValue={true} />
+        <Input
+          name="homePath"
+          label={formatMessage({ id: 'appManager.form.homePath' })}
+          rule="LEN-0-500"
+          defaultValue="/"
+          placeholder={formatMessage({ id: 'appManager.form.homePathPlaceholder' })}
+          block
+        />
         <TextArea name="description" label={formatMessage({ id: 'common.description' })} rule="LEN-0-1000" block />
         <TableList
           title={formatMessage({ id: 'appManager.form.entries' })}

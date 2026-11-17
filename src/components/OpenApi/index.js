@@ -214,7 +214,7 @@ const OpenApiPanel = withLocale(({ data }) => {
         type="warning"
         showIcon
         message={formatMessage(
-          { id: data.currentVersionId || data.deployment ? 'appManager.openApi.notRunning' : 'appManager.openApi.notDeployed' },
+          { id: data.kind === 'linked' || data.currentVersionId || data.deployment ? 'appManager.openApi.notRunning' : 'appManager.openApi.notDeployed' },
           { status: statusLabel }
         )}
       />

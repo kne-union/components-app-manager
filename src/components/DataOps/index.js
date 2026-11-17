@@ -120,14 +120,15 @@ const DataOps = createWithRemoteLoader({
     'components-core:Global@usePreset',
     'components-core:FormInfo',
     'components-core:TablePage',
-    'components-core:TablePage@Table',
+    'components-core:TablePage@useSelectedRow',
+    'components-core:TablePage@useSort',
     'components-core:Filter',
     'components-thirdparty:CodeEditor',
     'components-core:Modal@useModal'
   ]
 })(
   withLocale(({ remoteModules, data, onSuccess }) => {
-    const [usePreset, FormInfo, TablePage, Table, Filter, CodeEditor, useModal] = remoteModules;
+    const [usePreset, FormInfo, TablePage, useSelectedRow, useSort, Filter, CodeEditor, useModal] = remoteModules;
     const { ajax, apis } = usePreset();
     const { useFormModal } = FormInfo;
     const formModal = useFormModal();
@@ -194,9 +195,9 @@ const DataOps = createWithRemoteLoader({
     }, []);
 
     // table-view 的 rowKey 函数须返回字段路径（lodash get），不能返回主键值；统一写入 __rowKey
-    const { selectedRows, selectedRowKeys, getRowSelection, setSelectedRowKeys, clearSelectedRows } = Table.useSelectedRow({ rowKey: '__rowKey' });
+    const { selectedRows, selectedRowKeys, getRowSelection, setSelectedRowKeys, clearSelectedRows } = useSelectedRow({ rowKey: '__rowKey' });
 
-    const { sortRender } = Table.useSort({
+    const { sortRender } = useSort({
       sort: tableSort,
       onSortChange: next => {
         const newSort = Array.isArray(next) ? next : [];
@@ -554,7 +555,9 @@ const DataOps = createWithRemoteLoader({
           params: { name: appName }
         })}
         render={({ data: tablesData, reload: reloadTables }) => {
-          const pageData = tablesData?.pageData || [];
+          const pageData = (tablesData?.pageData || []).map(item =>
+            Object.assign({}, item, { table: item.table || item.name })
+          );
           const tableFilterKeyword = tableKeyword.trim().toLowerCase();
           const filteredTables = tableFilterKeyword
             ? pageData.filter(item => String(item.table).toLowerCase().includes(tableFilterKeyword))
@@ -595,8 +598,11 @@ const DataOps = createWithRemoteLoader({
           };
           const conn = tablesData?.connection || {};
           const scope = tablesData?.dbScope || 'shared';
+          const isLinkedApp = data?.kind === 'linked' || scope === 'remote' || tablesData?.readOnly === true;
           const summary =
-            [conn.dialect, conn.database].filter(Boolean).join(' · ') || connectionLabel || formatMessage({ id: 'appManager.db.defaultConnection' });
+            [conn.dialect, conn.host, conn.database].filter(Boolean).join(' · ') ||
+            connectionLabel ||
+            formatMessage({ id: isLinkedApp ? 'appManager.db.remoteConnection' : 'appManager.db.defaultConnection' });
 
           return (
             <div className={classnames(style['data-ops'], isMobile && style['is-mobile'])}>
@@ -604,39 +610,47 @@ const DataOps = createWithRemoteLoader({
                 <Space size={12} wrap>
                   <DatabaseOutlined />
                   <Text strong>{formatMessage({ id: 'appManager.db.connection' })}</Text>
-                  <Tag color={scope === 'dedicated' ? 'purple' : 'blue'}>
-                    {scope === 'dedicated'
-                      ? formatMessage({ id: 'appManager.db.scopeDedicated' })
-                      : formatMessage({ id: 'appManager.db.scopeShared' })}
-                  </Tag>
+                  {isLinkedApp ? (
+                    <Tag color="cyan">{formatMessage({ id: 'appManager.db.scopeRemote' })}</Tag>
+                  ) : (
+                    <Tag color={scope === 'dedicated' ? 'purple' : 'blue'}>
+                      {scope === 'dedicated'
+                        ? formatMessage({ id: 'appManager.db.scopeDedicated' })
+                        : formatMessage({ id: 'appManager.db.scopeShared' })}
+                    </Tag>
+                  )}
                   <Text type="secondary" ellipsis style={{ maxWidth: 360 }}>
                     {summary}
                   </Text>
                 </Space>
-                <Space wrap>
-                  {conn.hasCustomDb ? (
-                    <Space size={6}>
-                      <Text type="secondary">{formatMessage({ id: 'appManager.db.useDedicatedDb' })}</Text>
-                      <Switch
-                        size="small"
-                        checked={scope === 'dedicated'}
-                        loading={dedicatedSaving}
-                        onChange={checked => toggleDedicatedDb(checked, reloadTables)}
-                      />
-                    </Space>
-                  ) : null}
-                  <Button size="small" onClick={openDbConfig}>
-                    {formatMessage({ id: 'appManager.db.configureDb' })}
-                  </Button>
-                  {restartHint ? (
-                    <Button size="small" type="primary" icon={<SyncOutlined />} onClick={restartApp}>
-                      {formatMessage({ id: 'appManager.db.restartToApply' })}
+                {isLinkedApp ? null : (
+                  <Space wrap>
+                    {conn.hasCustomDb ? (
+                      <Space size={6}>
+                        <Text type="secondary">{formatMessage({ id: 'appManager.db.useDedicatedDb' })}</Text>
+                        <Switch
+                          size="small"
+                          checked={scope === 'dedicated'}
+                          loading={dedicatedSaving}
+                          onChange={checked => toggleDedicatedDb(checked, reloadTables)}
+                        />
+                      </Space>
+                    ) : null}
+                    <Button size="small" onClick={openDbConfig}>
+                      {formatMessage({ id: 'appManager.db.configureDb' })}
                     </Button>
-                  ) : null}
-                </Space>
+                    {restartHint ? (
+                      <Button size="small" type="primary" icon={<SyncOutlined />} onClick={restartApp}>
+                        {formatMessage({ id: 'appManager.db.restartToApply' })}
+                      </Button>
+                    ) : null}
+                  </Space>
+                )}
               </div>
 
-              {restartHint ? (
+              {isLinkedApp ? (
+                <Alert className={style['restart-alert']} type="info" showIcon message={formatMessage({ id: 'appManager.db.remoteReadOnlyHint' })} />
+              ) : restartHint ? (
                 <Alert className={style['restart-alert']} type="warning" showIcon message={formatMessage({ id: 'appManager.db.restartHint' })} />
               ) : (
                 <Alert className={style['restart-alert']} type="info" showIcon message={formatMessage({ id: 'appManager.db.dbConfigHint' })} />
