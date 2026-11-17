@@ -30,17 +30,17 @@ const formatSize = bytes => {
 const formatLogTime = value => (value ? String(value).replace('T', ' ').slice(0, 19) : '-');
 
 const LogArchives = createWithRemoteLoader({
-  modules: ['components-core:Global@usePreset', 'components-core:TablePage', 'components-core:Table']
+  modules: ['components-core:Global@usePreset', 'components-core:TablePage', 'components-core:TablePage@useSelectedRow']
 })(
   withLocale(({ remoteModules, data, open, onClose, onView }) => {
-    const [usePreset, TablePage, Table] = remoteModules;
+    const [usePreset, TablePage, useSelectedRow] = remoteModules;
     const { ajax, apis, staticUrl, getUserAccessToken } = usePreset();
     const { message, modal } = App.useApp();
     const { formatMessage } = useIntl();
     const isMobile = useIsMobile();
     const tableRef = useRef(null);
     const pageListRef = useRef([]);
-    const { selectedRows, getRowSelection, setSelectedRowKeys, clearSelectedRows } = Table.useSelectedRow({ rowKey: 'fileName' });
+    const { selectedRows, getRowSelection, setSelectedRowKeys, clearSelectedRows } = useSelectedRow({ rowKey: 'fileName' });
     const appName = data?.name;
 
     // 原生导航下载由浏览器流式落盘，大文件与打包下载都不会占用页面内存

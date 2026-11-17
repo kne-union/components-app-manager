@@ -108,12 +108,14 @@ describe('React Compiler：原生开关且产生有效 transform', () => {
 });
 
 describe('版本与依赖契约', () => {
-  test('package 为尚未占用的 0.1.2，react/antd/modules-dev 指向最新稳定', () => {
+  test('react19 + kne-craco + modules-dev 指向最新稳定', () => {
     const pkg = JSON.parse(fs.readFileSync(path.join(root, 'package.json'), 'utf8'));
-    expect(pkg.version).toBe('0.1.2');
     expect(pkg.devDependencies.react).toBe('^19.3.1');
     expect(pkg.devDependencies['react-dom']).toBe('^19.3.1');
     expect(pkg.devDependencies['@kne/modules-dev']).toBe('^2.4.21');
+    expect(pkg.devDependencies['@kne/craco']).toBe('^7.1.4');
+    expect(pkg.devDependencies['@kne/react-scripts']).toMatch(/^\^5\./);
     expect(pkg.devDependencies.antd).toMatch(/^\^6\./);
+    expect(pkg.devDependencies['@craco/craco']).toBeUndefined();
   });
 });

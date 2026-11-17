@@ -1,5 +1,5 @@
 import classnames from 'classnames';
-import { Flex, Typography } from 'antd';
+import { Flex, Tag, Typography } from 'antd';
 import { ExportOutlined } from '@ant-design/icons';
 import DefaultAppIcon from '@common/DefaultAppIcon';
 import { OpenAppLink } from '@common/AppEntry';
@@ -63,14 +63,27 @@ const createRenderAppMarketCards =
                             {item.name}
                           </Text>
                         </div>
-                        <StatusTag status={item.status} deployment={item.deployment} />
+                        <Flex gap={6} align="center" wrap="wrap">
+                          <Tag color={item.kind === 'linked' ? 'cyan' : 'default'}>
+                            {formatMessage({ id: item.kind === 'linked' ? 'appManager.kind.linked' : 'appManager.kind.managed' })}
+                          </Tag>
+                          <StatusTag status={item.status} deployment={item.deployment} />
+                        </Flex>
                       </Flex>
                       {item.description ? (
                         <Paragraph type="secondary" className={style['desc']} ellipsis={{ rows: 2 }}>
                           {item.description}
                         </Paragraph>
                       ) : null}
-                      {item.port || item.domain ? (
+                      {item.kind === 'linked' ? (
+                        item.pathUrl ? (
+                          <Flex gap={12} wrap="wrap" className={style['meta']}>
+                            <Text type="secondary" className={style['meta-item']} ellipsis>
+                              {item.pathUrl}
+                            </Text>
+                          </Flex>
+                        ) : null
+                      ) : item.port || item.domain ? (
                         <Flex gap={12} wrap="wrap" className={style['meta']}>
                           {item.port ? (
                             <Text type="secondary" className={style['meta-item']}>

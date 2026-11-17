@@ -46,6 +46,15 @@ const getColumns = ({ navigate, formatMessage, Image }) => {
       render: (_, { dataSource }) => <StatusTag status={dataSource.status} deployment={dataSource.deployment} />
     },
     {
+      name: 'kind',
+      title: formatMessage({ id: 'appManager.columns.kind' }),
+      renderType: 'tag',
+      getValueOf: item =>
+        item.kind === 'linked'
+          ? { type: 'processing', text: formatMessage({ id: 'appManager.kind.linked' }) }
+          : { type: 'default', text: formatMessage({ id: 'appManager.kind.managed' }) }
+    },
+    {
       name: 'isPublic',
       title: formatMessage({ id: 'common.isPublic' }),
       renderType: 'tag',
@@ -57,7 +66,7 @@ const getColumns = ({ navigate, formatMessage, Image }) => {
     {
       name: 'port',
       title: formatMessage({ id: 'appManager.columns.port' }),
-      getValueOf: item => item.port || null
+      getValueOf: item => (item.kind === 'linked' ? null : item.port || null)
     },
     {
       name: 'pathUrl',

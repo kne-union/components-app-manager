@@ -19,11 +19,8 @@ export const goAdminDetail = (navigate, colItem, baseUrl) => {
   navigate(query);
 };
 
-export const goAdminListBack = ({ navigate, location, baseUrl }) => {
-  if (location?.key && location.key !== 'default') {
-    navigate(-1);
-    return;
-  }
+/** 详情页返回：固定进列表，不用 history.back（避免落到 Tab/iframe 历史） */
+export const goAdminListBack = ({ navigate, baseUrl }) => {
   if (baseUrl) {
     navigate(baseUrl);
   }

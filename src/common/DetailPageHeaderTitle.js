@@ -1,5 +1,5 @@
 import { Flex } from 'antd';
-import { useLocation, useNavigate } from 'react-router-dom';
+import { useNavigate } from 'react-router-dom';
 import { createWithRemoteLoader } from '@kne/remote-loader';
 import { goAdminListBack } from '@common/goAdminDetail';
 import styles from './detailPageHeaderTitle.module.scss';
@@ -9,10 +9,9 @@ const DetailPageHeaderTitle = createWithRemoteLoader({
 })(({ remoteModules, baseUrl, title }) => {
   const [Icon] = remoteModules;
   const navigate = useNavigate();
-  const location = useLocation();
 
   const handleBack = () => {
-    goAdminListBack({ navigate, location, baseUrl });
+    goAdminListBack({ navigate, baseUrl });
   };
 
   return (

@@ -485,7 +485,7 @@ const LogViewer = createWithRemoteLoader({
             visibleLines.map((item, index) => <div key={`${item.line || index}-${index}`}>{item.content}</div>)
           )}
         </div>
-        <LogArchives data={data} open={archivesOpen} onClose={() => setArchivesOpen(false)} onView={viewFile} />
+        {archivesOpen ? <LogArchives data={data} open={archivesOpen} onClose={() => setArchivesOpen(false)} onView={viewFile} /> : null}
       </Flex>
     );
   })

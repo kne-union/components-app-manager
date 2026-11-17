@@ -29,6 +29,19 @@ const FieldRow = ({ label, children, mono }) => (
   </div>
 );
 
+const formatTime = value => (value ? new Date(value).toLocaleString() : '-');
+
+const Metric = ({ label, value, mono }) => (
+  <div className={style['metric']}>
+    <Text type="secondary" className={style['metric-label']}>
+      {label}
+    </Text>
+    <Text strong className={classnames(style['metric-value'], mono && style['mono'])} ellipsis={{ tooltip: true }}>
+      {display(value)}
+    </Text>
+  </div>
+);
+
 const Overview = createWithRemoteLoader({
   modules: ['components-core:Image']
 })(
@@ -37,6 +50,10 @@ const Overview = createWithRemoteLoader({
     const { formatMessage } = useIntl();
     const isMobile = useIsMobile();
     const title = data.label || data.name;
+    const linked = data.kind === 'linked';
+    const linkOptions = data.options || {};
+    const linkStatus = linkOptions.linkStatus;
+    const linkStatusText = linkStatus ? formatMessage({ id: `appManager.platformLink.status.${linkStatus}`, defaultMessage: linkStatus }) : null;
 
     return (
       <div className={style['overview']}>
@@ -57,6 +74,11 @@ const Overview = createWithRemoteLoader({
                 </div>
                 <StatusTag status={data.status} deployment={data.deployment} />
               </Flex>
+              {linked && data.message ? (
+                <Text type="danger" className={style['hero-message']}>
+                  {data.message}
+                </Text>
+              ) : null}
               <Paragraph type="secondary" className={style['hero-desc']} ellipsis={{ rows: 2 }}>
                 {data.description || formatMessage({ id: 'appManager.list.noDescription' })}
               </Paragraph>
@@ -68,40 +90,30 @@ const Overview = createWithRemoteLoader({
           </Flex>
 
           <div className={style['metrics']}>
-            <div className={style['metric']}>
-              <Text type="secondary" className={style['metric-label']}>
-                {formatMessage({ id: 'appManager.columns.port' })}
-              </Text>
-              <Text strong className={style['metric-value']}>
-                {display(data.port)}
-              </Text>
-            </div>
-            <div className={style['metric']}>
-              <Text type="secondary" className={style['metric-label']}>
-                {formatMessage({ id: 'appManager.detail.currentVersion' })}
-              </Text>
-              <Text strong className={classnames(style['metric-value'], style['mono'])} ellipsis={{ tooltip: true }}>
-                {display(data.currentVersionId)}
-              </Text>
-            </div>
-            <div className={style['metric']}>
-              <Text type="secondary" className={style['metric-label']}>
-                {formatMessage({ id: 'appManager.detail.pm2Name' })}
-              </Text>
-              <Text strong className={classnames(style['metric-value'], style['mono'])} ellipsis={{ tooltip: true }}>
-                {display(data.pm2Name)}
-              </Text>
-            </div>
+            {linked ? (
+              <>
+                <Metric label={formatMessage({ id: 'appManager.overview.remoteUrl' })} value={linkOptions.baseUrl} mono />
+                <Metric label={formatMessage({ id: 'appManager.overview.linkStatus' })} value={linkStatusText} />
+                <Metric label={formatMessage({ id: 'appManager.overview.syncedAt' })} value={formatTime(linkOptions.permissionsSyncedAt)} />
+              </>
+            ) : (
+              <>
+                <Metric label={formatMessage({ id: 'appManager.columns.port' })} value={data.port} />
+                <Metric label={formatMessage({ id: 'appManager.detail.currentVersion' })} value={data.currentVersionId} mono />
+                <Metric label={formatMessage({ id: 'appManager.detail.pm2Name' })} value={data.pm2Name} mono />
+              </>
+            )}
           </div>
 
-          {data.status === 'deploying' || data.deployment ? (
+          {!linked && (data.status === 'deploying' || data.deployment) ? (
             <Text type="secondary" className={style['deploying-hint']}>
               {formatMessage({ id: 'appManager.detail.deployingHint' })}
             </Text>
           ) : null}
         </section>
 
-        <LoadCard data={data} />
+        {/* linked 无本机 PM2 进程，实时负载不适用 */}
+        {linked ? null : <LoadCard data={data} />}
 
         <section className={style['detail-card']}>
           <div className={style['detail-card-title']}>{formatMessage({ id: 'appManager.detail.sectionMore' })}</div>
@@ -109,7 +121,13 @@ const Overview = createWithRemoteLoader({
             <FieldRow label={formatMessage({ id: 'appManager.columns.pathUrl' })}>
               {data.pathUrl ? <OpenAppLink app={data}>{data.pathUrl}</OpenAppLink> : '-'}
             </FieldRow>
-            <FieldRow label={formatMessage({ id: 'appManager.columns.domain' })}>{display(data.domain)}</FieldRow>
+            {linked ? (
+              <FieldRow label={formatMessage({ id: 'appManager.overview.oidcClient' })} mono>
+                {display(linkOptions.oidc?.clientId)}
+              </FieldRow>
+            ) : (
+              <FieldRow label={formatMessage({ id: 'appManager.columns.domain' })}>{display(data.domain)}</FieldRow>
+            )}
             <FieldRow label={formatMessage({ id: 'appManager.columns.message' })}>{display(data.message)}</FieldRow>
           </div>
         </section>

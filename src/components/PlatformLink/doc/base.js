@@ -1,6 +1,16 @@
 const { default: PlatformLink } = _PlatformLink;
-const { default: createEntry } = remoteLoader;
+const { default: mockPreset } = _mockPreset;
+const { createWithRemoteLoader } = remoteLoader;
 
-const BaseExample = createEntry(({ children }) => children)(() => <PlatformLink />);
+const BaseExample = createWithRemoteLoader({
+  modules: ['components-core:Global@PureGlobal']
+})(({ remoteModules }) => {
+  const [PureGlobal] = remoteModules;
+  return (
+    <PureGlobal preset={mockPreset}>
+      <PlatformLink />
+    </PureGlobal>
+  );
+});
 
 render(<BaseExample />);

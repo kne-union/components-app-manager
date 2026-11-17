@@ -1,0 +1,144 @@
+@use '~@kne/responsive-utils/scss' as resp;
+.page {
+  display: flex;
+  flex-direction: column;
+  gap: 24px;
+  width: 100%;
+  min-width: 0;
+}
+
+.section-header {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 12px;
+  margin-bottom: 12px;
+}
+
+.section-title {
+  font-size: 15px;
+  font-weight: 600;
+  color: #0f172a;
+}
+
+.platform-list {
+  display: flex;
+  flex-direction: column;
+  gap: 12px;
+}
+
+.platform {
+  padding: 16px 20px;
+  border-radius: 12px;
+  background: #f7f9fc;
+}
+
+.platform-error {
+  background: #fff7f7;
+}
+
+.platform-titles {
+  min-width: 0;
+}
+
+.platform-title {
+  margin: 0 !important;
+  line-height: 1.4 !important;
+}
+
+.platform-origin {
+  display: block;
+  margin-top: 2px;
+  font-family: ui-monospace, SFMono-Regular, Menlo, Monaco, Consolas, monospace;
+  font-size: 12px;
+  word-break: break-all;
+}
+
+.platform-notice {
+  margin-top: 12px;
+}
+
+.platform-remark {
+  display: block;
+  margin-top: 10px;
+  font-size: 12px;
+}
+
+.metrics {
+  display: grid;
+  grid-template-columns: repeat(3, minmax(0, 1fr));
+  gap: 24px;
+  margin-top: 16px;
+}
+
+.metric {
+  min-width: 0;
+}
+
+.metric-label {
+  display: block;
+  font-size: 12px;
+  margin-bottom: 4px;
+}
+
+.metric-value {
+  display: block;
+  font-size: 14px;
+  line-height: 1.35;
+}
+
+.mono {
+  font-family: ui-monospace, SFMono-Regular, Menlo, Monaco, Consolas, monospace;
+  font-size: 12px !important;
+}
+
+.empty-hint {
+  display: block;
+  max-width: 480px;
+  margin: 0 auto 12px;
+  font-size: 13px;
+}
+
+.log-time {
+  white-space: nowrap;
+  font-variant-numeric: tabular-nums;
+}
+
+.log-action {
+  white-space: nowrap;
+}
+
+.install-key {
+  margin: 0 !important;
+  padding: 12px 14px;
+  border: 1px solid #e8edf3;
+  border-radius: 10px;
+  background: #f8fafc;
+  font-family: ui-monospace, SFMono-Regular, Menlo, Monaco, Consolas, monospace;
+  font-size: 12px;
+  line-height: 1.6;
+  word-break: break-all;
+}
+
+@include resp.mobile-container {
+  .platform {
+    padding: 14px 16px;
+  }
+  .metrics {
+    grid-template-columns: 1fr;
+    gap: 8px;
+  }
+  .metric {
+    display: flex;
+    align-items: baseline;
+    justify-content: space-between;
+    gap: 12px;
+  }
+  .metric-label {
+    margin-bottom: 0;
+    flex-shrink: 0;
+  }
+  .metric-value {
+    text-align: right;
+  }
+}

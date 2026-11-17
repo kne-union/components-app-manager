@@ -2,8 +2,8 @@
   "isFull": true,
   "list": [
     {
-      "title": "平台注册",
-      "description": "远程应用登记主平台并生成 installKey",
+      "title": "平台关联",
+      "description": "外部应用本地管理员登记主平台、生成一次性 installKey、查看配对状态与访问记录（连续同类记录会折叠）",
       "code": "./base.js",
       "scope": [
         {

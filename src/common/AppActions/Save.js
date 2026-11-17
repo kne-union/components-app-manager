@@ -33,6 +33,7 @@ const Save = createWithRemoteLoader({
                       icon: formData.icon,
                       category: formData.category || null,
                       isPublic: !!formData.isPublic,
+                      homePath: formData.homePath || '/',
                       entries: (formData.entries || []).map(({ label, path, showInCenter }) => ({
                         label,
                         path,
