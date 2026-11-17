@@ -8,6 +8,7 @@ import FormInner from '@common/FormInner';
 import { getActionList } from '@common/AppActions';
 import getColumns from './getColumns';
 import createRenderAppMarketCards from './AppMarketCards';
+import LinkImport from './LinkImport';
 import style from './style.module.scss';
 
 const STATUS_OPTIONS = ['idle', 'deploying', 'running', 'stopped', 'error'];
@@ -56,6 +57,14 @@ const List = createWithRemoteLoader({
 
     return (
       <div className={style['list-page']}>
+        <div className={style['list-toolbar']}>
+          <LinkImport
+            onSuccess={() => {
+              // BizUnit 列表在创建后会自行刷新；关联成功后刷新页面即可
+              window.location.reload();
+            }}
+          />
+        </div>
         <BizUnit
           {...props}
           isNext

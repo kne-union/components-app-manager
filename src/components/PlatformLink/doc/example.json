@@ -1,0 +1,24 @@
+{
+  "isFull": true,
+  "list": [
+    {
+      "title": "平台注册",
+      "description": "远程应用登记主平台并生成 installKey",
+      "code": "./base.js",
+      "scope": [
+        {
+          "name": "_PlatformLink",
+          "packageName": "@components/PlatformLink"
+        },
+        {
+          "name": "_mockPreset",
+          "packageName": "@root/mockPreset"
+        },
+        {
+          "name": "remoteLoader",
+          "packageName": "@kne/remote-loader"
+        }
+      ]
+    }
+  ]
+}

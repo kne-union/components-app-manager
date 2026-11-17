@@ -11,20 +11,24 @@ export const getActionList =
   ({ data, onSuccess, onRemoveSuccess, ...rest }) => {
     const actionProps = { data, onSuccess, ...rest };
     const status = data?.status;
+    const linked = data?.kind === 'linked';
     const list = [
       {
         ...actionProps,
         buttonComponent: Save,
         children: formatMessage({ id: 'common.edit' })
-      },
-      {
-        ...actionProps,
-        buttonComponent: UploadVersion,
-        children: formatMessage({ id: 'appManager.actions.uploadVersion' })
       }
     ];
 
-    if (includeLifecycle) {
+    if (!linked) {
+      list.push({
+        ...actionProps,
+        buttonComponent: UploadVersion,
+        children: formatMessage({ id: 'appManager.actions.uploadVersion' })
+      });
+    }
+
+    if (includeLifecycle && !linked) {
       if (status === 'stopped' || status === 'idle' || status === 'error') {
         list.push({
           ...actionProps,

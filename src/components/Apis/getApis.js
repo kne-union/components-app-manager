@@ -6,6 +6,23 @@ const getApis = options => {
       url: `${prefix}/app/create`,
       method: 'POST'
     },
+    linkImport: {
+      url: `${prefix}/app/link/import`,
+      method: 'POST'
+    },
+    linkSync: {
+      url: `${prefix}/app/link/sync`,
+      method: 'POST'
+    },
+    linkSyncOne: {
+      url: `${prefix}/app/{name}/link/sync`,
+      method: 'POST'
+    },
+    linkAudit: {
+      url: `${prefix}/app/{name}/link/audit`,
+      method: 'GET',
+      paramsType: 'params'
+    },
     save: {
       url: `${prefix}/app/save`,
       method: 'POST'
