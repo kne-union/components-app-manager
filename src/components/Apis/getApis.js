@@ -18,6 +18,11 @@ const getApis = options => {
       url: `${prefix}/app/{name}/link/sync`,
       method: 'POST'
     },
+    linkAudit: {
+      url: `${prefix}/app/{name}/link/audit`,
+      method: 'GET',
+      paramsType: 'params'
+    },
     save: {
       url: `${prefix}/app/save`,
       method: 'POST'

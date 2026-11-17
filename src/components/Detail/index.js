@@ -13,6 +13,8 @@ import Env from '@components/Env';
 import DataOps from '@components/DataOps';
 import Logs from '@components/Logs';
 import Settings from '@components/Settings';
+import Migrations from '@components/Migrations';
+import LinkAudit from '@components/LinkAudit';
 import DeployingStatusPoller from './DeployingStatusPoller';
 import DetailPageHeaderTitle from '@common/DetailPageHeaderTitle';
 import style from './style.module.scss';
@@ -52,8 +54,12 @@ const Detail = createWithRemoteLoader({
               content = <Logs data={data} />;
             } else if (activeKey === 'openApi') {
               content = <OpenApi data={data} />;
-            } else if (activeKey === 'settings') {
+            } else if (activeKey === 'settings' && data.kind !== 'linked') {
               content = <Settings data={data} onSuccess={reload} />;
+            } else if (activeKey === 'migrations') {
+              content = <Migrations data={data} />;
+            } else if (activeKey === 'linkAudit' && data.kind === 'linked') {
+              content = <LinkAudit data={data} />;
             } else {
               content = <Overview data={data} />;
             }
@@ -104,8 +110,14 @@ const Detail = createWithRemoteLoader({
                     { tab: formatMessage({ id: 'appManager.tabs.openApi' }), key: 'openApi' },
                     { tab: formatMessage({ id: 'appManager.tabs.env' }), key: 'env' },
                     { tab: formatMessage({ id: 'appManager.tabs.data' }), key: 'data' },
+                    { tab: formatMessage({ id: 'appManager.tabs.migrations' }), key: 'migrations' },
                     { tab: formatMessage({ id: 'appManager.tabs.logs' }), key: 'logs' },
-                    { tab: formatMessage({ id: 'appManager.tabs.settings' }), key: 'settings' }
+                    data.kind === 'linked'
+                      ? { tab: formatMessage({ id: 'appManager.tabs.linkAudit' }), key: 'linkAudit' }
+                      : null,
+                    data.kind === 'linked'
+                      ? null
+                      : { tab: formatMessage({ id: 'appManager.tabs.settings' }), key: 'settings' }
                   ].filter(Boolean)
                 }}
               >
