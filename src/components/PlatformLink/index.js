@@ -56,7 +56,7 @@ const Metric = ({ label, value, mono }) => (
 const PlatformLink = createWithRemoteLoader({
   modules: ['components-core:Global@usePreset', 'components-core:FormInfo@useFormModal', 'components-core:FormInfo', 'components-core:TablePage', 'components-core:Layout@Page']
 })(
-  withLocale(({ remoteModules, prefix = '/app-ops' }) => {
+  withLocale(({ remoteModules, prefix = '/app-ops', menu, menuFixed, withPage = true }) => {
     const [usePreset, useFormModal, FormInfo, TablePage, Page] = remoteModules;
     const { ajax } = usePreset();
     const ajaxRef = useRef(ajax);
@@ -301,22 +301,21 @@ const PlatformLink = createWithRemoteLoader({
       }
     ].filter(Boolean);
 
-    return (
-      <Page
-        title={formatMessage({ id: 'appManager.platformLink.title' })}
-        titleExtra={
-          <Space size={8}>
-            <Button icon={<ReloadOutlined />} onClick={reloadAll}>
-              {formatMessage({ id: 'common.refresh' })}
-            </Button>
-            {platforms.list.length ? (
-              <Button type="primary" icon={<PlusOutlined />} onClick={() => openRegister()}>
-                {formatMessage({ id: 'appManager.platformLink.register' })}
-              </Button>
-            ) : null}
-          </Space>
-        }
-      >
+    const titleExtra = (
+      <Space size={8}>
+        <Button icon={<ReloadOutlined />} onClick={reloadAll}>
+          {formatMessage({ id: 'common.refresh' })}
+        </Button>
+        {platforms.list.length ? (
+          <Button type="primary" icon={<PlusOutlined />} onClick={() => openRegister()}>
+            {formatMessage({ id: 'appManager.platformLink.register' })}
+          </Button>
+        ) : null}
+      </Space>
+    );
+
+    const body = (
+      <>
         <div className={style['page']}>
           <section className={style['section']}>{renderPlatformsBody()}</section>
 
@@ -378,6 +377,16 @@ const PlatformLink = createWithRemoteLoader({
             </Flex>
           ) : null}
         </Modal>
+      </>
+    );
+
+    if (!withPage) {
+      return body;
+    }
+
+    return (
+      <Page title={formatMessage({ id: 'appManager.platformLink.title' })} menu={menu} menuFixed={menuFixed} titleExtra={titleExtra}>
+        {body}
       </Page>
     );
   })
