@@ -1,7 +1,6 @@
 import { useCallback, useMemo } from 'react';
 import { createWithRemoteLoader } from '@kne/remote-loader';
 import { useNavigate } from 'react-router-dom';
-import { useIsMobile } from '@kne/responsive-utils';
 import withLocale from '@common/withLocale';
 import { useIntl } from '@kne/react-intl';
 import FormInner from '@common/FormInner';
@@ -21,7 +20,6 @@ const List = createWithRemoteLoader({
     const { apis } = usePreset();
     const { formatMessage } = useIntl();
     const navigate = useNavigate();
-    const isMobile = useIsMobile();
     const { SuperSelectFilterItem } = Filter.fields;
 
     const statusOptions = useMemo(
@@ -55,15 +53,17 @@ const List = createWithRemoteLoader({
 
     const renderAppMarketCards = useMemo(() => createRenderAppMarketCards({ Image, navigate, formatMessage }), [Image, navigate, formatMessage]);
 
-    const linkImportExtra = useMemo(
-      () => (
-        <LinkImport
-          onSuccess={() => {
-            // titleExtra 拿不到 BizUnit reloadTable，关联成功后刷新列表
-            window.location.reload();
-          }}
-        />
-      ),
+    // 以 buttonGroup 项（buttonComponent）接入工具栏，与「创建应用」同一机制，才能正确套用 ButtonGroup 的按钮样式与下拉菜单样式
+    const linkImportButtonGroup = useMemo(
+      () => ({
+        list: [
+          {
+            buttonComponent: LinkImport,
+            // 关联成功后刷新列表（拿不到 BizUnit reloadTable）
+            onSuccess: () => window.location.reload()
+          }
+        ]
+      }),
       []
     );
 
@@ -79,9 +79,7 @@ const List = createWithRemoteLoader({
           filter={filter}
           getColumns={getColumnsFn}
           getActionList={getActionListFn}
-          titleExtra={linkImportExtra}
           options={{
-            showLength: isMobile ? 0 : 2,
             createButtonProps: {
               children: formatMessage({ id: 'appManager.list.create' }),
               type: 'primary'
@@ -95,7 +93,8 @@ const List = createWithRemoteLoader({
               renderMobile: renderAppMarketCards,
               pagination: {
                 paramsType: 'params'
-              }
+              },
+              buttonGroup: linkImportButtonGroup
             }
           }}
         />
