@@ -9,6 +9,10 @@
 | className | string  | 否   | -      | 追加到面板根节点的类名，配合下方固定类名定制内部样式                    |
 | bordered  | boolean | 否   | true   | 为 `false` 时去掉面板边框、背景与阴影，分类标签与默认图标改用宿主主题色 |
 
+#### 应用名称多语言
+
+应用名称按当前语言显示：取列表项的 `labelI18n[当前语言]`，没有则显示 `label`。`labelI18n` 由后端合并租户配置、应用中心配置与子应用声明后下发，用户切换语言时无需重新请求列表。
+
 #### 可定制的固定类名
 
 内部元素在 CSS Modules 类名之外，额外带有固定的全局类名，宿主可通过 `className` 限定作用域后覆盖样式（CSS Modules 中写作 `.custom :global(.app-center-tab)`）。

@@ -7,6 +7,7 @@ import { useIsMobile } from '@kne/responsive-utils';
 import withLocale from '@common/withLocale';
 import { useIntl } from '@kne/react-intl';
 import DefaultAppIcon from '@common/DefaultAppIcon';
+import getAppLabel from '@common/appLabel';
 import { useOpenApp } from '@common/AppEntry';
 import pwaDocument from '@kne/pwa-document';
 import style from './style.module.scss';
@@ -24,15 +25,15 @@ const PwaSync = ({ apps }) => {
 
 const getCategoryCode = item => (typeof item.category === 'string' ? item.category : item.category?.code) || UNCATEGORIZED;
 
-const AppIcon = ({ item, Image, size, themed }) => {
+const AppIcon = ({ item, Image, size, themed, label }) => {
   if (item.icon && Image?.Avatar) {
-    return <Image.Avatar id={item.icon} alt={item.label || item.name} size={size} shape="square" />;
+    return <Image.Avatar id={item.icon} alt={label} size={size} shape="square" />;
   }
   return <DefaultAppIcon themed={themed} />;
 };
 
 const AppPanel = ({ list, groups, Image, themed }) => {
-  const { formatMessage } = useIntl();
+  const { formatMessage, locale } = useIntl();
   const isMobile = useIsMobile();
   const openApp = useOpenApp();
   const [category, setCategory] = useState('all');
@@ -85,20 +86,23 @@ const AppPanel = ({ list, groups, Image, themed }) => {
         />
       ) : (
         <div className={classnames(style['grid'], 'app-center-grid')}>
-          {filtered.map(item => (
-            <button
-              type="button"
-              key={item.name}
-              className={classnames(style['app'], 'app-center-app')}
-              title={item.description || item.label || item.name}
-              onClick={() => openApp(item)}
-            >
-              <div className={classnames(style['icon'], 'app-center-icon')}>
-                <AppIcon item={item} Image={Image} size={isMobile ? 52 : 72} themed={themed} />
-              </div>
-              <div className={classnames(style['label'], 'app-center-label')}>{item.label || item.name}</div>
-            </button>
-          ))}
+          {filtered.map(item => {
+            const label = getAppLabel(item, locale);
+            return (
+              <button
+                type="button"
+                key={item.name}
+                className={classnames(style['app'], 'app-center-app')}
+                title={item.description || label}
+                onClick={() => openApp(item)}
+              >
+                <div className={classnames(style['icon'], 'app-center-icon')}>
+                  <AppIcon item={item} Image={Image} size={isMobile ? 52 : 72} themed={themed} label={label} />
+                </div>
+                <div className={classnames(style['label'], 'app-center-label')}>{label}</div>
+              </button>
+            );
+          })}
         </div>
       )}
     </>

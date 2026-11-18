@@ -112,6 +112,27 @@ const getApis = options => {
       url: `${prefix}/app/center/list`,
       method: 'GET'
     },
+    centerMenus: {
+      url: `${prefix}/app/center/menus`,
+      method: 'GET'
+    },
+    centerStatus: {
+      url: `${prefix}/app/center/status`,
+      method: 'GET',
+      paramsType: 'params'
+    },
+    centerToken: {
+      url: `${prefix}/app/center/token`,
+      method: 'POST'
+    },
+    centerDisplaySettings: {
+      url: `${prefix}/app/center/display-settings`,
+      method: 'GET'
+    },
+    centerDisplaySettingsSave: {
+      url: `${prefix}/app/center/display-settings/save`,
+      method: 'POST'
+    },
     centerPublicList: {
       url: `${prefix}/app/center/public-list`,
       method: 'GET'

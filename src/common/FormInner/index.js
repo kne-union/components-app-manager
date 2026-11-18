@@ -23,7 +23,15 @@ const FormInner = createWithRemoteLoader({
           disabled={!!isEdit}
           block
         />
-        <Input name="label" label={formatMessage({ id: 'appManager.form.label' })} rule="REQ LEN-1-100" block />
+        <Input
+          name="label"
+          label={formatMessage({ id: 'appManager.form.label' })}
+          tips={formatMessage({ id: 'appManager.form.labelI18nTips' })}
+          rule="REQ LEN-1-100"
+          block
+        />
+        <Input name="labelI18n.zh-CN" label={formatMessage({ id: 'appManager.form.labelZhCN' })} rule="LEN-0-100" block />
+        <Input name="labelI18n.en-US" label={formatMessage({ id: 'appManager.form.labelEnUS' })} rule="LEN-0-100" block />
         <Input
           name="domain"
           label={formatMessage({ id: 'appManager.form.domain' })}
