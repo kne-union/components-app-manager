@@ -68,6 +68,7 @@ const locale = {
   'appManager.link.installKey': '安装密钥 installKey',
   'appManager.link.nameOptional': '应用 name（可选，覆盖远程）',
   'appManager.link.labelOptional': '显示名（可选）',
+  'appManager.link.iconOptional': '图标（可选，不上传则自动获取远程应用图标）',
   'appManager.link.importSuccess': '外部应用已关联',
   'appManager.tabs.migrations': '迁移 / SQL',
   'appManager.tabs.linkAudit': '代理审计',

@@ -68,6 +68,7 @@ const locale = {
   'appManager.link.installKey': 'Install key',
   'appManager.link.nameOptional': 'App name (optional override)',
   'appManager.link.labelOptional': 'Label (optional)',
+  'appManager.link.iconOptional': 'Icon (optional, fetched from the remote app if not uploaded)',
   'appManager.link.importSuccess': 'External app linked',
   'appManager.tabs.migrations': 'Migrations / SQL',
   'appManager.tabs.linkAudit': 'Proxy Audit',
