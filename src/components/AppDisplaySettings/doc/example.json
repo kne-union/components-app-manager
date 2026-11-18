@@ -1,0 +1,24 @@
+{
+  "isFull": true,
+  "list": [
+    {
+      "title": "租户设置：应用展示方式",
+      "description": "每个应用单选「应用中心」或「左菜单」；没有声明菜单的应用只能在应用中心展示（公告栏），切换后立即保存",
+      "code": "./base.js",
+      "scope": [
+        {
+          "name": "_AppDisplaySettings",
+          "packageName": "@components/AppDisplaySettings"
+        },
+        {
+          "name": "_mockPreset",
+          "packageName": "@root/mockPreset"
+        },
+        {
+          "name": "remoteLoader",
+          "packageName": "@kne/remote-loader"
+        }
+      ]
+    }
+  ]
+}

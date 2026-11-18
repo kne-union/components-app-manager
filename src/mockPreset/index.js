@@ -129,9 +129,14 @@ const toDetail = app =>
 
 export const mockApp = toDetail(appStore[0]);
 
+// 应用中心配置的默认多语言名称，与租户为应用配置的多语言名称（租户配置优先）
+const defaultLabels = { 'hr-portal': { 'zh-CN': '招聘门户', 'en-US': 'HR Portal' } };
+const tenantLabels = {};
+
 const centerItem = app => ({
   name: app.name,
   label: app.label,
+  ...(defaultLabels[app.name] || tenantLabels[app.name] ? { labelI18n: Object.assign({}, defaultLabels[app.name], tenantLabels[app.name]) } : {}),
   icon: app.icon,
   description: app.description,
   category: app.category,
@@ -141,6 +146,18 @@ const centerItem = app => ({
 });
 
 const page = list => ({ pageData: list, totalCount: list.length });
+
+const menuDeclarations = {
+  'hr-portal': {
+    integration: 'blank',
+    menus: [
+      { key: 'jobs', fullKey: 'jobs', label: '职位管理', path: '/admin/jobs' },
+      { key: 'candidates', fullKey: 'candidates', label: '候选人', path: '/admin/candidates' }
+    ]
+  }
+};
+
+const displayModes = { 'hr-portal': 'menu' };
 
 const delay = (result, ms = 400) => new Promise(resolve => setTimeout(() => resolve(result), ms));
 
@@ -179,6 +196,86 @@ const apis = merge(
       ...createOpenApiMock({ delay }),
       centerList: {
         loader: () => delay(page(appStore.filter(item => item.status === 'running').map(centerItem)))
+      },
+      centerMenus: {
+        loader: () =>
+          delay(
+            page(
+              appStore
+                .filter(item => item.status === 'running' && menuDeclarations[item.name] && displayModes[item.name] === 'menu')
+                .map(item => ({
+                  name: item.name,
+                  label: item.label,
+                  icon: item.icon,
+                  kind: 'managed',
+                  integration: menuDeclarations[item.name].integration,
+                  baseUrl: `/app/${item.name}`,
+                  version: '1.2.0',
+                  menus: menuDeclarations[item.name].menus
+                }))
+            )
+          )
+      },
+      centerStatus: {
+        loader: ({ params } = {}) => {
+          const item = findApp(params?.name);
+          const healthy = !!item && item.status === 'running';
+          return delay({ name: params?.name, status: item?.status || 'missing', healthy, message: healthy ? null : item?.message || null }, 200);
+        }
+      },
+      centerToken: {
+        loader: () => delay({ token: 'mock-user-token', expiresAt: new Date(Date.now() + 60 * 60 * 1000).toISOString() })
+      },
+      centerDisplaySettings: {
+        loader: () =>
+          delay(
+            page([
+              ...appStore
+                .filter(item => item.status === 'running')
+                .map(item => {
+                  const menuCount = menuDeclarations[item.name]?.menus.length || 0;
+                  return {
+                    name: item.name,
+                    label: item.label,
+                    labelI18n: tenantLabels[item.name] || {},
+                    defaultLabelI18n: defaultLabels[item.name] || {},
+                    icon: item.icon,
+                    kind: 'managed',
+                    supportsMenu: menuCount > 0,
+                    menuCount,
+                    displayMode: menuCount > 0 ? displayModes[item.name] || 'center' : 'center',
+                    configured: item.name in displayModes,
+                    menuStatus: menuCount > 0 ? 'ok' : 'none',
+                    menuError: null
+                  };
+                }),
+              {
+                name: 'notice-board',
+                label: '公告栏',
+                labelI18n: tenantLabels['notice-board'] || {},
+                defaultLabelI18n: {},
+                icon: null,
+                kind: 'managed',
+                supportsMenu: false,
+                menuCount: 0,
+                displayMode: 'center',
+                configured: false,
+                menuStatus: 'none',
+                menuError: null
+              }
+            ])
+          )
+      },
+      centerDisplaySettingsSave: {
+        loader: ({ data }) => {
+          if (data.displayMode !== undefined) {
+            displayModes[data.name] = data.displayMode;
+          }
+          if (data.labelI18n !== undefined) {
+            tenantLabels[data.name] = Object.fromEntries(Object.entries(data.labelI18n).filter(([, value]) => String(value).trim()));
+          }
+          return delay({ name: data.name, displayMode: displayModes[data.name] || null, labelI18n: tenantLabels[data.name] || {} }, 200);
+        }
       },
       centerPublicList: {
         loader: () => delay(page(appStore.filter(item => item.status === 'running' && item.isPublic).map(centerItem)))

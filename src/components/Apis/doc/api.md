@@ -12,4 +12,4 @@
 
 | 类型   | 说明                                                                                                                        |
 | ------ | --------------------------------------------------------------------------------------------------------------------------- |
-| object | 以接口名为 key（如 `list`、`detail`、`deploy`、`logsStream`、`centerList`、`openApi`）的 `{ url, method, paramsType }` 配置 |
+| object | 以接口名为 key（如 `list`、`detail`、`deploy`、`logsStream`、`centerList`、`centerMenus`、`centerStatus`、`centerToken`、`centerDisplaySettings`、`openApi`）的 `{ url, method, paramsType }` 配置 |

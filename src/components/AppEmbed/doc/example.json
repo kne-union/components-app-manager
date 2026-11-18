@@ -1,0 +1,62 @@
+{
+  "isFull": true,
+  "list": [
+    {
+      "title": "按应用与菜单嵌入",
+      "description": "传入 appName 与 menuKey，组件自行读取当前租户设置为左菜单展示的应用并渲染对应菜单页面；示例应用为新窗口（blank）集成方式，显示打开按钮",
+      "code": "./base.js",
+      "scope": [
+        {
+          "name": "_AppEmbed",
+          "packageName": "@components/AppEmbed"
+        },
+        {
+          "name": "_mockPreset",
+          "packageName": "@root/mockPreset"
+        },
+        {
+          "name": "remoteLoader",
+          "packageName": "@kne/remote-loader"
+        }
+      ]
+    },
+    {
+      "title": "应用或菜单不可用",
+      "description": "应用没有设置为左菜单展示、没有访问权限或菜单不存在时，给出提示而不是空白页",
+      "code": "./missing.js",
+      "scope": [
+        {
+          "name": "_AppEmbed",
+          "packageName": "@components/AppEmbed"
+        },
+        {
+          "name": "_mockPreset",
+          "packageName": "@root/mockPreset"
+        },
+        {
+          "name": "remoteLoader",
+          "packageName": "@kne/remote-loader"
+        }
+      ]
+    },
+    {
+      "title": "应用挂了",
+      "description": "页面照常渲染，进入后异步检测应用状态；检测到应用不可用时切换为错误状态，可点击「重新检测」，恢复后回到页面。应用正常时检测不产生任何界面变化",
+      "code": "./down.js",
+      "scope": [
+        {
+          "name": "_AppEmbed",
+          "packageName": "@components/AppEmbed"
+        },
+        {
+          "name": "_mockPreset",
+          "packageName": "@root/mockPreset"
+        },
+        {
+          "name": "remoteLoader",
+          "packageName": "@kne/remote-loader"
+        }
+      ]
+    }
+  ]
+}
